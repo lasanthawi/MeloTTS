@@ -39,7 +39,7 @@ def load_speakers(language, text):
         newtext = text
     return gr.update(value=list(models[language].hps.data.spk2id.keys())[0], choices=list(models[language].hps.data.spk2id.keys())), newtext
 with gr.Blocks() as demo:
-    gr.Markdown('# MeloTTS WebUI\n\nA WebUI for MeloTTS.')
+    gr.Markdown('# MeloTTS Natural Voice Synthesizer\n\nA multilingual text-to-speech system for generating natural-sounding voices.')
     with gr.Group():
         speaker = gr.Dropdown(speaker_ids.keys(), interactive=True, value='EN-US', label='Speaker')
         language = gr.Radio(['EN', 'ES', 'FR', 'ZH', 'JP', 'KR'], label='Language', value='EN')
@@ -49,7 +49,7 @@ with gr.Blocks() as demo:
     btn = gr.Button('Synthesize', variant='primary')
     aud = gr.Audio(interactive=False)
     btn.click(synthesize, inputs=[speaker, text, speed, language], outputs=[aud])
-    gr.Markdown('WebUI by [mrfakename](https://twitter.com/realmrfakename).')
+    gr.Markdown('Made with <3 by Builtapps.')
 @click.command()
 @click.option('--share', '-s', is_flag=True, show_default=True, default=False, help="Expose a publicly-accessible shared Gradio link usable by anyone with the link. Only share the link with people you trust.")
 @click.option('--host', '-h', default=None)

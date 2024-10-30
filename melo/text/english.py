@@ -217,7 +217,7 @@ def g2p_old(text):
 def g2p(text, pad_start_end=True, tokenized=None):
     if tokenized is None:
         tokenized = tokenizer.tokenize(text)
-    # import pdb; pdb.set_trace()
+    
     phs = []
     ph_groups = []
     for t in tokenized:
@@ -239,15 +239,21 @@ def g2p(text, pad_start_end=True, tokenized=None):
             tones += tns
             phone_len += len(phns)
         else:
-            phone_list = list(filter(lambda p: p != " ", _g2p(w)))
-            for ph in phone_list:
-                if ph in arpa:
-                    ph, tn = refine_ph(ph)
-                    phones.append(ph)
-                    tones.append(tn)
-                else:
-                    phones.append(ph)
-                    tones.append(0)
+            try:
+                phone_list = list(filter(lambda p: p != " ", _g2p(w)))
+                for ph in phone_list:
+                    if ph in arpa:
+                        ph, tn = refine_ph(ph)
+                        phones.append(ph)
+                        tones.append(tn)
+                    else:
+                        phones.append(ph)
+                        tones.append(0)
+                    phone_len += 1
+            except Exception as e:
+                print(f"Warning: Failed to process word '{w}', using as-is")
+                phones.append(w)
+                tones.append(0)
                 phone_len += 1
         aaa = distribute_phone(phone_len, word_len)
         word2ph += aaa
